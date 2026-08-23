@@ -19,7 +19,6 @@ export default function AccordionSection({
   children,
 }: AccordionSectionProps) {
   const contentRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLButtonElement>(null);
   const [maxHeight, setMaxHeight] = useState("0px");
 
   useEffect(() => {
@@ -34,36 +33,13 @@ export default function AccordionSection({
     }
   }, [children, isOpen]);
 
-  const handleToggle = () => {
-    const willOpen = !isOpen;
-    onToggle();
-
-    if (willOpen) {
-      // Saat expand: scroll ke header dengan posisi atas (start)
-      setTimeout(() => {
-        headerRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }, 100);
-    } else {
-      // Saat collapse: scroll hanya jika header tidak terlihat (nearest)
-      setTimeout(() => {
-        headerRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }, 350); // setelah animasi selesai
-    }
-  };
-
   return (
     <div className="border border-gray-200 rounded-xl bg-white shadow-sm">
       <button
-        ref={headerRef}
-        onClick={handleToggle}
+        onClick={onToggle} // langsung panggil onToggle tanpa scroll
         className="sticky top-0 z-10 w-full p-4 bg-white border-b border-gray-200 rounded-t-xl hover:bg-gray-50 transition-colors"
       >
+        {/* konten header sama seperti sebelumnya */}
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0 flex-1">
             <h2
@@ -92,7 +68,6 @@ export default function AccordionSection({
             />
           </svg>
         </div>
-
         {badges && (
           <div className="flex flex-wrap gap-2 mt-2 text-left">{badges}</div>
         )}
