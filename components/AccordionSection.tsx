@@ -62,7 +62,6 @@ export default function AccordionSection({
       <button
         ref={headerRef}
         onClick={handleToggle}
-        style={{ scrollMarginTop: "80px" }}
         className="sticky top-0 z-10 w-full p-4 bg-white border-b border-gray-200 rounded-t-xl hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center justify-between gap-3">
