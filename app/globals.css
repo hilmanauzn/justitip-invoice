@@ -8,7 +8,7 @@ body {
 html,
 body {
   overscroll-behavior: none;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* Scrollbar kustom */
