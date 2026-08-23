@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import { useUIStore } from "@/store/useUIStore";
 import SearchInput from "./SearchInput";
 import { useKeyboardInset } from "@/hooks/useKeyboardInset";
@@ -11,19 +12,37 @@ export default function FloatingSearchButton() {
   const setSearchExpanded = useUIStore((state) => state.setSearchExpanded);
   const inset = useKeyboardInset();
 
+  // Tutup popover saat scroll atau touchmove
+  useEffect(() => {
+    if (!isSearchExpanded) return;
+
+    const handleScroll = () => {
+      setSearchExpanded(false);
+    };
+
+    // Multiple events untuk memastikan tertangkap di semua browser
+    document.addEventListener("scroll", handleScroll, true);
+    window.addEventListener("scroll", handleScroll, true);
+    window.addEventListener("touchmove", handleScroll, { passive: true });
+
+    return () => {
+      document.removeEventListener("scroll", handleScroll, true);
+      window.removeEventListener("scroll", handleScroll, true);
+      window.removeEventListener("touchmove", handleScroll);
+    };
+  }, [isSearchExpanded, setSearchExpanded]);
+
   return (
     <div
-      className="md:hidden fixed right-4 z-40 flex flex-col items-end"
+      className="md:hidden fixed right-4 z-40 flex flex-col items-end transition-all duration-200"
       style={{ bottom: `calc(6rem + ${inset}px)` }}
     >
-      {/* Popover search */}
       {isSearchExpanded && (
         <div className="search-pop-in mb-2 w-72 bg-white rounded-xl shadow-lg border border-gray-200 p-3">
           <SearchInput autoFocus onClose={() => setSearchExpanded(false)} />
         </div>
       )}
 
-      {/* Tombol toggle */}
       <button
         onClick={toggleSearchExpanded}
         className="w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300"

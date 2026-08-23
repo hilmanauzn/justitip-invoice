@@ -40,7 +40,7 @@ export default function MobileCartBar() {
 
   return (
     <div
-      className="md:hidden fixed left-0 right-0 bg-white border-t border-gray-200 p-4 z-10 shadow-lg"
+      className="md:hidden fixed left-0 right-0 bg-white border-t border-gray-200 p-4 z-10 shadow-lg transition-all duration-200"
       style={{ bottom: `${inset}px` }}
     >
       <div className="flex items-center justify-between gap-4">
