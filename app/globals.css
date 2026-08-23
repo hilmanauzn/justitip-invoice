@@ -49,6 +49,19 @@ body {
     font-size: 13px; /* sebelumnya 14px, sekarang lebih kecil */
   }
 
+  /* Mencegah zoom otomatis iOS Safari pada input */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  /* Opsional: sesuaikan padding agar input tidak terlalu besar */
+  input {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
   /* Gap lebih sempit */
   .gap-1 {
     gap: 0.125rem;

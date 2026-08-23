@@ -1,6 +1,7 @@
 "use client";
 import { MenuItem } from "@/types";
 import { useCartStore } from "@/store/useCartStore";
+import { useAddonStore } from "@/store/useAddonstore";
 import QuantityControl from "./QuantityControl";
 
 interface MenuItemCardProps {
@@ -17,16 +18,19 @@ export default function MenuItemCard({
   const addItem = useCartStore((state) => state.addItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const items = useCartStore((state) => state.items);
-  const quantity = useCartStore(
-    (state) => state.items.find((i) => i.id === item.id)?.quantity || 0,
-  );
+  const openAddonModal = useAddonStore((state) => state.openAddonModal);
+
+  // Total kuantitas semua varian item ini (termasuk addon berbeda)
+  const totalQuantity = items
+    .filter((i) => i.id === item.id)
+    .reduce((sum, i) => sum + i.quantity, 0);
 
   const totalQuantityForRestaurant = items
-    .filter((i) => i.idRestaurant === item.idRestaurant)
+    .filter((i) => i.idRestaurant === item.idRestaurant && i.includeJastip)
     .reduce((sum, i) => sum + i.quantity, 0);
 
   const hasMultipleWarning =
-    quantity > 0 &&
+    totalQuantity > 0 &&
     restaurantMultiple > 1 &&
     totalQuantityForRestaurant % restaurantMultiple !== 0;
 
@@ -37,7 +41,7 @@ export default function MenuItemCard({
       minimumFractionDigits: 0,
     }).format(price);
 
-  // Badge jastip
+  // Badge jastip (sama seperti sebelumnya)
   let jastipBadge = null;
   if (!item.includeJastip) {
     jastipBadge = (
@@ -48,7 +52,7 @@ export default function MenuItemCard({
   } else if (item.jastipFeeSpecial) {
     jastipBadge = (
       <span className="text-xs font-medium text-purple-600 bg-purple-100 rounded-full px-2 py-0.5">
-        Jastip Khusus: {formatPrice(item.jastipFeeSpecial)}/item
+        Jastip Khusus: {formatPrice(item.jastipFeeSpecial)}
       </span>
     );
   } else {
@@ -63,10 +67,18 @@ export default function MenuItemCard({
     );
   }
 
+  const handleAddToCart = () => {
+    if (item.addon && item.addon.length > 0) {
+      openAddonModal(item);
+    } else {
+      addItem(item);
+    }
+  };
+
   return (
     <div
       className={`menu-card bg-white rounded-xl shadow-sm border overflow-hidden flex flex-col transition-all duration-300 ${
-        quantity > 0 ? "ring-2 ring-orange-500" : "border-gray-100"
+        totalQuantity > 0 ? "ring-2 ring-orange-500" : "border-gray-100"
       }`}
     >
       {item.image ? (
@@ -109,11 +121,29 @@ export default function MenuItemCard({
             </span>
           </div>
 
-          {quantity === 0 ? (
+          {item.addon && item.addon.length > 0 ? (
+            // Untuk item dengan addon: selalu tombol pilih addon
             <button
-              onClick={() => addItem(item)}
+              onClick={handleAddToCart}
               disabled={!item.available}
-              className={`btn mt-3 w-full py-2.5 px-1 rounded-lg font-medium text-white ${
+              className={`btn mt-3 w-full py-2.5 rounded-lg font-medium text-white ${
+                item.available
+                  ? "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 shadow-md hover:shadow-lg"
+                  : "bg-gray-300 cursor-not-allowed"
+              }`}
+            >
+              {item.available
+                ? totalQuantity > 0
+                  ? "➕ Tambah Addon"
+                  : "➕ Pilih Addon"
+                : "Tidak Tersedia"}
+            </button>
+          ) : totalQuantity === 0 ? (
+            // Item tanpa addon, belum ada di keranjang
+            <button
+              onClick={handleAddToCart}
+              disabled={!item.available}
+              className={`btn mt-3 w-full py-2.5 rounded-lg font-medium text-white ${
                 item.available
                   ? "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 shadow-md hover:shadow-lg"
                   : "bg-gray-300 cursor-not-allowed"
@@ -122,13 +152,26 @@ export default function MenuItemCard({
               {item.available ? "➕ Tambah ke Pesanan" : "Tidak Tersedia"}
             </button>
           ) : (
+            // Item tanpa addon, sudah ada: tampilkan quantity control
             <>
               <QuantityControl
-                quantity={quantity}
-                width="full"
-                onDecrease={() => updateQuantity(item.id, quantity - 1)}
+                quantity={totalQuantity}
+                onDecrease={() => {
+                  const existingItem = items.find((i) => i.id === item.id);
+                  if (existingItem) {
+                    updateQuantity(
+                      existingItem.cartItemId,
+                      existingItem.quantity - 1,
+                    );
+                  }
+                }}
                 onIncrease={() => addItem(item)}
-                onChange={(value) => updateQuantity(item.id, value)}
+                onChange={(value) => {
+                  const existingItem = items.find((i) => i.id === item.id);
+                  if (existingItem) {
+                    updateQuantity(existingItem.cartItemId, value);
+                  }
+                }}
               />
               {hasMultipleWarning && (
                 <p className="text-xs text-amber-600 mt-1 flex items-center gap-1">

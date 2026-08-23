@@ -5,11 +5,11 @@ export interface MenuItem {
   description?: string;
   price: number;
   category: string;
-  includeJastip?: boolean;
+  includeJastip: boolean;
+  jastipFeeSpecial?: number;
+  addon?: string[];
   image?: string;
   available: boolean;
-  jastipFeeSpecial?: number;
-  addon?: Array<string>;
 }
 
 export interface RestaurantItem {
@@ -24,4 +24,6 @@ export interface RestaurantItem {
 
 export interface CartItem extends MenuItem {
   quantity: number;
+  cartItemId: string; // ID unik untuk membedakan item dengan addon berbeda
+  selectedAddon?: string;
 }

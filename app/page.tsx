@@ -7,6 +7,7 @@ import CartSummarySheet from "@/components/CartSummarySheet";
 import ReceiptModal from "@/components/ReceiptModal";
 import CustomerModal from "@/components/CustomerModal";
 import FloatingSearchButton from "@/components/FloatingSearchButton";
+import AddonModal from "@/components/AddonModal";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
       <ReceiptModal />
       <CustomerModal />
       <FloatingSearchButton />
+      <AddonModal />
     </div>
   );
 }

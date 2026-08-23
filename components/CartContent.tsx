@@ -1,5 +1,6 @@
 "use client";
 import { useCartStore } from "@/store/useCartStore";
+import { useAddonStore } from "@/store/useAddonstore";
 import QuantityControl from "./QuantityControl";
 import { restaurantData } from "@/data";
 
@@ -8,6 +9,8 @@ export default function CartContent() {
   const removeItem = useCartStore((state) => state.removeItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const clearCart = useCartStore((state) => state.clearCart);
+  const addItem = useCartStore((state) => state.addItem);
+  const openAddonModal = useAddonStore((state) => state.openAddonModal);
 
   const formatPrice = (price: number) =>
     new Intl.NumberFormat("id-ID", {
@@ -48,7 +51,7 @@ export default function CartContent() {
       ) : (
         <>
           <ul className="space-y-2">
-            {items.map((item, idx) => {
+            {items.map((item) => {
               const restaurant = restaurantData.find(
                 (r) => r.id === item.idRestaurant,
               );
@@ -64,16 +67,23 @@ export default function CartContent() {
 
               return (
                 <li
-                  key={`${item.id}-${idx}`}
+                  key={item.cartItemId}
                   className="bg-white border border-gray-200 rounded-lg p-2.5 shadow-sm"
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <p className="font-semibold text-gray-800 truncate flex-1">
-                      {item.name}
-                    </p>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-800 truncate">
+                        {item.name}
+                      </p>
+                      {item.selectedAddon && (
+                        <p className="text-xs text-gray-500 mt-0.5">
+                          Addon: {item.selectedAddon}
+                        </p>
+                      )}
+                    </div>
                     <button
-                      onClick={() => removeItem(item.id)}
-                      className="text-gray-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-red-50"
+                      onClick={() => removeItem(item.cartItemId)}
+                      className="text-gray-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-red-50 flex-shrink-0"
                       aria-label="Hapus item"
                     >
                       <svg
@@ -124,12 +134,18 @@ export default function CartContent() {
                     <QuantityControl
                       quantity={item.quantity}
                       onDecrease={() =>
-                        updateQuantity(item.id, item.quantity - 1)
+                        updateQuantity(item.cartItemId, item.quantity - 1)
                       }
-                      onIncrease={() =>
-                        updateQuantity(item.id, item.quantity + 1)
+                      onIncrease={() => {
+                        if (item.addon && item.addon.length > 0) {
+                          openAddonModal(item);
+                        } else {
+                          addItem(item);
+                        }
+                      }}
+                      onChange={(value) =>
+                        updateQuantity(item.cartItemId, value)
                       }
-                      onChange={(value) => updateQuantity(item.id, value)}
                     />
                     <p className="font-bold text-orange-600 text-base">
                       {formatPrice(item.price * item.quantity)}

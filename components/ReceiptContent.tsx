@@ -140,6 +140,9 @@ export default function ReceiptContent() {
           font-size: 26px;
           font-weight: bold;
         }
+        .receipt-secondary-text {
+          color: #99a1af;
+        }
         .receipt-payment-status {
           text-align: right;
           margin: -5px 20px;
@@ -217,12 +220,23 @@ export default function ReceiptContent() {
 
             {/* Item order */}
             {restItems.map((item, i) => (
-              <div key={`${item.id}-${i}`}>
+              <div key={item.cartItemId}>
                 <div className="receipt-item">
-                  <div className="receipt-item-name">{item.name}</div>
+                  <div className="flex justify-between items-baseline">
+                    <div className="receipt-item-name">{item.name}</div>
+                    {item.selectedAddon && (
+                      <div className="text-sm receipt-secondary-text ml-10">
+                        Addon: {item.selectedAddon}
+                      </div>
+                    )}
+                  </div>
+
                   <div className="receipt-item-detail">
                     <div>
-                      {item.quantity}x {formatPrice(item.price)}
+                      <span className="receipt-secondary-text">
+                        {item.quantity}x
+                      </span>{" "}
+                      {formatPrice(item.price)}
                     </div>
                     <div>{formatPrice(item.price * item.quantity)}</div>
                   </div>
@@ -231,12 +245,13 @@ export default function ReceiptContent() {
                 {/* Fee jastip khusus per item */}
                 {item.jastipFeeSpecial && (
                   <div className="receipt-item">
-                    <div className="receipt-item-name">
-                      Jastip Khusus {item.name}
-                    </div>
+                    <div className="receipt-item-name">Fee Jastip</div>
                     <div className="receipt-item-detail">
                       <div>
-                        {item.quantity}x {formatPrice(item.jastipFeeSpecial)}
+                        <span className="receipt-secondary-text">
+                          {item.quantity}x
+                        </span>{" "}
+                        {formatPrice(item.jastipFeeSpecial)}
                       </div>
                       <div>
                         {formatPrice(item.quantity * item.jastipFeeSpecial)}
@@ -253,7 +268,8 @@ export default function ReceiptContent() {
                 <div className="receipt-item-name">Fee Jastip</div>
                 <div className="receipt-item-detail">
                   <div>
-                    {batch}x {formatPrice(restaurant.jastipFee)}
+                    <span className="receipt-secondary-text">{batch}x</span>{" "}
+                    {formatPrice(restaurant.jastipFee)}
                   </div>
                   <div>{formatPrice(batch * restaurant.jastipFee)}</div>
                 </div>
