@@ -66,9 +66,7 @@ export default function MenuItemCard({
   return (
     <div
       className={`menu-card bg-white rounded-xl shadow-sm border overflow-hidden flex flex-col transition-all duration-300 ${
-        quantity > 0
-          ? "outline outline-2 outline-orange-500 outline-offset-2"
-          : "border-gray-100"
+        quantity > 0 ? "ring-2 ring-orange-500" : "border-gray-100"
       }`}
     >
       {item.image ? (
@@ -115,7 +113,7 @@ export default function MenuItemCard({
             <button
               onClick={() => addItem(item)}
               disabled={!item.available}
-              className={`btn mt-3 w-full py-2.5 rounded-lg font-medium text-white ${
+              className={`btn mt-3 w-full py-2.5 px-1 rounded-lg font-medium text-white ${
                 item.available
                   ? "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 shadow-md hover:shadow-lg"
                   : "bg-gray-300 cursor-not-allowed"

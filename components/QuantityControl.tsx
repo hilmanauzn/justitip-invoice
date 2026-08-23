@@ -24,16 +24,6 @@ export default function QuantityControl({
     setInputValue(String(quantity));
   }, [quantity]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-        inputRef.current.select();
-      }
-    }, 50);
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "");
     setInputValue(value);

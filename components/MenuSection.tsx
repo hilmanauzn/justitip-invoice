@@ -56,7 +56,7 @@ export default function MenuSection() {
   if (filteredMenu) {
     return (
       <div
-        className="flex-1 min-h-0 overflow-y-auto overscroll-contain"
+        className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain"
         onScroll={handleScroll}
       >
         {/* Sticky header hasil pencarian – offset mengikuti tinggi header utama */}
@@ -97,7 +97,7 @@ export default function MenuSection() {
   // Tampilan accordion normal
   return (
     <div
-      className="flex-1 min-h-0 overflow-y-auto overscroll-contain"
+      className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain"
       onScroll={handleScroll}
     >
       <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-4 pb-24 md:pb-6">
