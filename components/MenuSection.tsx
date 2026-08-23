@@ -55,19 +55,16 @@ export default function MenuSection() {
 
   if (filteredMenu) {
     return (
-      <div
-        className="flex-1 overflow-y-auto pb-24 md:pb-6"
-        onScroll={handleScroll}
-      >
-        {/* Sticky header hasil pencarian */}
-        <div className="sticky top-0 z-10 bg-gray-50/95 backdrop-blur-sm border-b border-gray-200 px-4 py-2">
+      <div className="flex-1 overflow-y-auto" onScroll={handleScroll}>
+        {/* Sticky header hasil pencarian – offset mengikuti tinggi header utama */}
+        <div className="sticky top-[64px] z-10 bg-gray-50/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3">
           <h2 className="text-lg font-semibold text-gray-800">
             Hasil Pencarian: {searchQuery}
           </h2>
         </div>
 
         {/* Konten hasil pencarian */}
-        <div className="p-4 sm:p-6">
+        <div className="p-4 sm:p-6 pb-32 md:pb-6">
           {filteredMenu.length === 0 ? (
             <p className="text-gray-500 text-center mt-10">
               Tidak ada menu yang cocok.
@@ -97,7 +94,7 @@ export default function MenuSection() {
   // Tampilan accordion normal
   return (
     <div className="flex-1 overflow-y-auto" onScroll={handleScroll}>
-      <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-4">
+      <div className="px-4 sm:px-6 py-4 sm:py-6 pb-32 md:pb-6 space-y-4">
         {restaurantIds.map((restId) => {
           const restaurant = restaurantData.find((r) => r.id === restId);
           const restaurantItems = menuData.filter(

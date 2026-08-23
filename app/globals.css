@@ -73,3 +73,7 @@ body {
   animation: search-pop-in 0.25s ease-out;
   transform-origin: bottom right;
 }
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
