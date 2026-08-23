@@ -1,7 +1,7 @@
 "use client";
-import { useEffect } from "react";
 import { useUIStore } from "@/store/useUIStore";
 import SearchInput from "./SearchInput";
+import { useKeyboardInset } from "@/hooks/useKeyboardInset";
 
 export default function FloatingSearchButton() {
   const isSearchExpanded = useUIStore((state) => state.isSearchExpanded);
@@ -9,22 +9,13 @@ export default function FloatingSearchButton() {
     (state) => state.toggleSearchExpanded,
   );
   const setSearchExpanded = useUIStore((state) => state.setSearchExpanded);
-
-  // Tutup popover saat ada scroll di area mana pun
-  useEffect(() => {
-    if (!isSearchExpanded) return;
-
-    const handleScroll = () => {
-      setSearchExpanded(false);
-    };
-
-    // Gunakan capture true untuk menangkap scroll pada elemen overflow-y-auto
-    document.addEventListener("scroll", handleScroll, true);
-    return () => document.removeEventListener("scroll", handleScroll, true);
-  }, [isSearchExpanded, setSearchExpanded]);
+  const inset = useKeyboardInset();
 
   return (
-    <div className="md:hidden fixed bottom-24 right-4 z-40 flex flex-col items-end">
+    <div
+      className="md:hidden fixed right-4 z-40 flex flex-col items-end"
+      style={{ bottom: `calc(6rem + ${inset}px)` }}
+    >
       {/* Popover search */}
       {isSearchExpanded && (
         <div className="search-pop-in mb-2 w-72 bg-white rounded-xl shadow-lg border border-gray-200 p-3">

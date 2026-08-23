@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, useEffect, ReactNode } from "react";
+import { useRef, useState, useEffect, ReactNode, useLayoutEffect } from "react";
 
 interface AccordionSectionProps {
   isOpen: boolean;
@@ -20,12 +20,34 @@ export default function AccordionSection({
 }: AccordionSectionProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [maxHeight, setMaxHeight] = useState("0px");
+  const badgesContainerRef = useRef<HTMLDivElement>(null);
+  const [isBadgesOverflow, setIsBadgesOverflow] = useState(false);
 
   useEffect(() => {
     if (contentRef.current) {
       setMaxHeight(isOpen ? `${contentRef.current.scrollHeight}px` : "0px");
     }
   }, [isOpen]);
+
+  useLayoutEffect(() => {
+    const checkOverflow = () => {
+      const el = badgesContainerRef.current;
+      if (el) {
+        setIsBadgesOverflow(el.scrollWidth > el.clientWidth + 1);
+      }
+    };
+
+    checkOverflow();
+
+    // Ukur ulang setelah render selesai (untuk mobile)
+    const timer = setTimeout(checkOverflow, 100);
+    window.addEventListener("resize", checkOverflow);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", checkOverflow);
+    };
+  }, [badges]);
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -69,7 +91,19 @@ export default function AccordionSection({
           </svg>
         </div>
         {badges && (
-          <div className="flex flex-wrap gap-2 mt-2 text-left">{badges}</div>
+          <div
+            ref={badgesContainerRef}
+            className="mt-2 overflow-hidden whitespace-nowrap text-left"
+          >
+            {isBadgesOverflow ? (
+              <div className="inline-flex gap-2 animate-marquee">
+                {badges}
+                {badges}
+              </div>
+            ) : (
+              <div className="inline-flex gap-2">{badges}</div>
+            )}
+          </div>
         )}
       </button>
 

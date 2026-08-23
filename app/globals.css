@@ -95,6 +95,48 @@ body {
   }
 }
 
+@media (max-width: 640px) {
+  /* Header compact */
+  header .px-4 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  header .py-3 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  header .text-2xl {
+    font-size: 1.25rem; /* ikon lebih kecil */
+  }
+
+  header .text-lg {
+    font-size: 1rem; /* judul customer lebih kecil */
+  }
+
+  header .gap-4 {
+    gap: 0.5rem; /* jarak antar elemen lebih rapat */
+  }
+
+  /* Sembunyikan label "Pesanan:" di mobile jika perlu */
+  header .hidden.md\:flex {
+    display: none;
+  }
+
+  header .p-2 {
+    padding: 0.25rem;
+  }
+  header .px-3 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  header .py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+}
+
 /* Hover hanya untuk perangkat dengan pointer halus (desktop) */
 @media (hover: hover) {
   .menu-card:hover {

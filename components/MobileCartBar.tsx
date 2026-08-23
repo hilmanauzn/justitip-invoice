@@ -1,11 +1,13 @@
 "use client";
 import { useCartStore } from "@/store/useCartStore";
 import { useUIStore } from "@/store/useUIStore";
+import { useKeyboardInset } from "@/hooks/useKeyboardInset";
 
 export default function MobileCartBar() {
   const items = useCartStore((state) => state.items);
   const getTotalPrice = useCartStore((state) => state.getTotalPrice);
   const openCart = useUIStore((state) => state.openCart);
+  const inset = useKeyboardInset();
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
   const totalPrice = getTotalPrice();
@@ -18,9 +20,11 @@ export default function MobileCartBar() {
     }).format(price);
 
   if (totalItems === 0) {
-    // Tidak ada pesanan
     return (
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 shadow-lg pb-safe">
+      <div
+        className="md:hidden fixed left-0 right-0 bg-white border-t border-gray-200 p-4 z-10 shadow-lg"
+        style={{ bottom: `${inset}px` }}
+      >
         <div className="flex items-center justify-between gap-4">
           <p className="text-sm text-gray-500">Belum ada pesanan</p>
           <button
@@ -35,7 +39,10 @@ export default function MobileCartBar() {
   }
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 shadow-lg">
+    <div
+      className="md:hidden fixed left-0 right-0 bg-white border-t border-gray-200 p-4 z-10 shadow-lg"
+      style={{ bottom: `${inset}px` }}
+    >
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="relative">
