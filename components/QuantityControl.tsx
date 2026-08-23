@@ -62,7 +62,7 @@ export default function QuantityControl({
 
   return (
     <div
-      className={`${width === "full" ? "mt-1" : ""} flex items-center justify-center gap-2 bg-gray-100 rounded-lg p-1.5 w-fit`}
+      className={`${width === "full" ? "mt-1 w-full" : "w-fit"} flex items-center justify-center gap-2 bg-gray-100 rounded-lg p-1.5`}
     >
       <button
         onClick={onDecrease}

@@ -127,6 +127,7 @@ export default function MenuItemCard({
             <>
               <QuantityControl
                 quantity={quantity}
+                width="full"
                 onDecrease={() => updateQuantity(item.id, quantity - 1)}
                 onIncrease={() => addItem(item)}
                 onChange={(value) => updateQuantity(item.id, value)}
