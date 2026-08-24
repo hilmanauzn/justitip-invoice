@@ -1,8 +1,11 @@
 "use client";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { useUIStore } from "@/store/useUIStore";
 
 export default function ReceiptModal() {
   const { isReceiptOpen, receiptImage, closeReceipt } = useUIStore();
+
+  useLockBodyScroll(isReceiptOpen);
 
   if (!isReceiptOpen || !receiptImage) return null;
 

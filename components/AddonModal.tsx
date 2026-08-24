@@ -2,11 +2,13 @@
 import { useState } from "react";
 import { useAddonStore } from "@/store/useAddonstore";
 import { useCartStore } from "@/store/useCartStore";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 
 export default function AddonModal() {
   const { isAddonOpen, selectedItem, closeAddonModal } = useAddonStore();
   const addItem = useCartStore((state) => state.addItem);
   const [selectedAddon, setSelectedAddon] = useState<string>("");
+  useLockBodyScroll(isAddonOpen);
 
   if (!isAddonOpen || !selectedItem) return null;
 

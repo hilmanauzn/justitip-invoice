@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useCustomerStore } from "@/store/useCustomerStore";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 
 export default function CustomerModal() {
   const {
@@ -19,6 +20,8 @@ export default function CustomerModal() {
       openCustomerModal();
     }
   }, [customerName, isCustomerModalOpen, openCustomerModal]);
+
+  useLockBodyScroll(isCustomerModalOpen);
 
   // Sinkronkan inputValue saat modal dibuka atau customerName berubah
   useEffect(() => {
