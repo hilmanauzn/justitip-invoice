@@ -42,9 +42,9 @@ export default function CustomerModal() {
   const isNameEmpty = customerName === "";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden">
       <div
-        className="absolute inset-0 bg-black/30"
+        className="absolute inset-0 bg-black/30 overflow-hidden"
         onClick={isNameEmpty ? undefined : closeCustomerModal}
       />
       <div className="relative bg-white rounded-xl max-w-sm w-full shadow-xl p-6">

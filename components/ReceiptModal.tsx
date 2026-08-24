@@ -17,8 +17,11 @@ export default function ReceiptModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/50" onClick={closeReceipt} />
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 overflow-hidden">
+      <div
+        className="absolute inset-0 bg-black/50 overflow-hidden"
+        onClick={closeReceipt}
+      />
       <div className="relative bg-white rounded-xl max-w-md w-full max-h-[85vh] flex flex-col shadow-xl">
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Struk Pesanan</h2>

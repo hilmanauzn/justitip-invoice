@@ -21,8 +21,11 @@ export default function AddonModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/30" onClick={closeAddonModal} />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden">
+      <div
+        className="absolute inset-0 bg-black/30 overflow-hidden"
+        onClick={closeAddonModal}
+      />
       <div className="relative bg-white rounded-xl max-w-sm w-full shadow-xl p-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold">Pilih Addon</h2>
