@@ -142,6 +142,7 @@ export default function MenuItemCard({
                 quantity={totalQuantity}
                 onDecrease={handleDecrease}
                 onIncrease={handleIncrease}
+                width="full"
                 onChange={(value) => {
                   // Tidak digunakan di menu card, hanya untuk input manual
                   const existingItem = items.find(
