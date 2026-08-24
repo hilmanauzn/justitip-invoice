@@ -57,12 +57,18 @@ export default function CartSummary() {
                 <ul className="space-y-1 mb-2">
                   {restItems.map((item, idx) => (
                     <li
-                      key={`${item.id}-${idx}`}
+                      key={`${item.cartItemId}-${idx}`}
                       className="flex justify-between items-center text-xs"
                     >
                       <span className="text-gray-600 truncate flex-1">
                         {item.name}{" "}
                         <span className="text-gray-400">x{item.quantity}</span>
+                        {item.selectedAddon && (
+                          <span className="text-gray-500">
+                            {" "}
+                            — {item.selectedAddon}
+                          </span>
+                        )}
                       </span>
                       <span className="text-gray-700 font-medium">
                         {formatPrice(item.price * item.quantity)}

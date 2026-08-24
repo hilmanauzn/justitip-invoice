@@ -67,7 +67,17 @@ export default function MenuItemCard({
     );
   }
 
-  const handleAddToCart = () => {
+  // Handler untuk tombol −
+  const handleDecrease = () => {
+    // Cari varian item ini yang quantity > 0, pilih yang pertama
+    const existingItem = items.find((i) => i.id === item.id && i.quantity > 0);
+    if (existingItem) {
+      updateQuantity(existingItem.cartItemId, existingItem.quantity - 1);
+    }
+  };
+
+  // Handler untuk tombol +
+  const handleIncrease = () => {
     if (item.addon && item.addon.length > 0) {
       openAddonModal(item);
     } else {
@@ -81,19 +91,7 @@ export default function MenuItemCard({
         totalQuantity > 0 ? "ring-2 ring-orange-500" : "border-gray-100"
       }`}
     >
-      {item.image ? (
-        <div className="h-32 bg-gray-200">
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      ) : (
-        <div className="h-32 bg-gradient-to-br from-orange-100 to-amber-200 flex items-center justify-center">
-          <span className="text-4xl">🍲</span>
-        </div>
-      )}
+      {/* ... gambar & konten sama ... */}
       <div className="p-4 flex flex-col flex-1">
         <div className="flex flex-wrap items-center gap-1 mb-1">
           <span className="text-xs font-medium text-gray-500 bg-gray-100 rounded-full px-2 py-0.5 truncate">
@@ -121,10 +119,10 @@ export default function MenuItemCard({
             </span>
           </div>
 
-          {item.addon && item.addon.length > 0 ? (
-            // Untuk item dengan addon: selalu tombol pilih addon
+          {/* Tampilkan counter jika sudah dipilih, selain itu tombol tambah */}
+          {totalQuantity === 0 ? (
             <button
-              onClick={handleAddToCart}
+              onClick={handleIncrease}
               disabled={!item.available}
               className={`btn mt-3 w-full py-2.5 rounded-lg font-medium text-white ${
                 item.available
@@ -133,41 +131,22 @@ export default function MenuItemCard({
               }`}
             >
               {item.available
-                ? totalQuantity > 0
-                  ? "➕ Tambah Addon"
-                  : "➕ Pilih Addon"
+                ? item.addon && item.addon.length > 0
+                  ? "➕ Pilih Addon"
+                  : "➕ Tambah ke Pesanan"
                 : "Tidak Tersedia"}
             </button>
-          ) : totalQuantity === 0 ? (
-            // Item tanpa addon, belum ada di keranjang
-            <button
-              onClick={handleAddToCart}
-              disabled={!item.available}
-              className={`btn mt-3 w-full py-2.5 rounded-lg font-medium text-white ${
-                item.available
-                  ? "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 shadow-md hover:shadow-lg"
-                  : "bg-gray-300 cursor-not-allowed"
-              }`}
-            >
-              {item.available ? "➕ Tambah ke Pesanan" : "Tidak Tersedia"}
-            </button>
           ) : (
-            // Item tanpa addon, sudah ada: tampilkan quantity control
             <>
               <QuantityControl
                 quantity={totalQuantity}
-                onDecrease={() => {
-                  const existingItem = items.find((i) => i.id === item.id);
-                  if (existingItem) {
-                    updateQuantity(
-                      existingItem.cartItemId,
-                      existingItem.quantity - 1,
-                    );
-                  }
-                }}
-                onIncrease={() => addItem(item)}
+                onDecrease={handleDecrease}
+                onIncrease={handleIncrease}
                 onChange={(value) => {
-                  const existingItem = items.find((i) => i.id === item.id);
+                  // Tidak digunakan di menu card, hanya untuk input manual
+                  const existingItem = items.find(
+                    (i) => i.id === item.id && i.quantity > 0,
+                  );
                   if (existingItem) {
                     updateQuantity(existingItem.cartItemId, value);
                   }

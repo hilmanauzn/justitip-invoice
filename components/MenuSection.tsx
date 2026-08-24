@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { menuData, restaurantData } from "@/data";
 import MenuItemCard from "./MenuItemCard";
 import AccordionSection from "./AccordionSection";
@@ -53,6 +53,20 @@ export default function MenuSection() {
     setScrollTimeout(newTimeout);
   };
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const lastScrollTop = useRef(0);
+
+  const handleAddItem = () => {
+    lastScrollTop.current = scrollRef.current?.scrollTop ?? 0;
+  };
+
+  useLayoutEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = lastScrollTop.current;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [restaurantData]); // sesuaikan dependency
+
   if (filteredMenu) {
     return (
       <div
@@ -97,7 +111,7 @@ export default function MenuSection() {
   // Tampilan accordion normal
   return (
     <div
-      className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain"
+      className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain menu-scroll"
       onScroll={handleScroll}
     >
       <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-4 pb-24 md:pb-6">
@@ -161,12 +175,16 @@ export default function MenuSection() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {categoryItems.map((item, idx) => (
-                          <MenuItemCard
+                          <div
                             key={`${item.id}-${idx}`}
-                            item={item}
-                            restaurantJastipFee={jastipFee}
-                            restaurantMultiple={multiple}
-                          />
+                            onClick={handleAddItem}
+                          >
+                            <MenuItemCard
+                              item={item}
+                              restaurantJastipFee={jastipFee}
+                              restaurantMultiple={multiple}
+                            />
+                          </div>
                         ))}
                       </div>
                     </div>
