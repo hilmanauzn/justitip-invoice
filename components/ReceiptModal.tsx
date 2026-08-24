@@ -21,8 +21,9 @@ export default function ReceiptModal() {
       <div
         className="absolute inset-0 bg-black/50 overflow-hidden"
         onClick={closeReceipt}
+        style={{ touchAction: "none" }}
       />
-      <div className="relative bg-white rounded-xl max-w-md w-full max-h-[85vh] flex flex-col shadow-xl">
+      <div className="relative bg-white rounded-xl max-w-md w-full max-h-[85vh] flex flex-col shadow-xl overscroll-contain">
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Struk Pesanan</h2>
           <button

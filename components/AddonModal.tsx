@@ -25,8 +25,9 @@ export default function AddonModal() {
       <div
         className="absolute inset-0 bg-black/30 overflow-hidden"
         onClick={closeAddonModal}
+        style={{ touchAction: "none" }}
       />
-      <div className="relative bg-white rounded-xl max-w-sm w-full shadow-xl p-4">
+      <div className="relative bg-white rounded-xl max-w-sm w-full shadow-xl p- overscroll-contain4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold">Pilih Addon</h2>
           <button

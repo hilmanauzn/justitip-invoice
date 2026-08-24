@@ -46,8 +46,9 @@ export default function CustomerModal() {
       <div
         className="absolute inset-0 bg-black/30 overflow-hidden"
         onClick={isNameEmpty ? undefined : closeCustomerModal}
+        style={{ touchAction: "none" }}
       />
-      <div className="relative bg-white rounded-xl max-w-sm w-full shadow-xl p-6">
+      <div className="relative bg-white rounded-xl max-w-sm w-full shadow-xl p-6 overscroll-contain">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Nama Customer</h2>
           {!isNameEmpty && (
