@@ -31,8 +31,13 @@ export default function CustomerModal() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputValue.trim()) {
-      setCustomerName(inputValue.trim());
+    const trimmed = inputValue.trim().replace(/\s+/g, " "); // rapikan spasi
+    if (trimmed) {
+      // Capitalize setiap kata
+      const capitalized = trimmed
+        .toLowerCase()
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+      setCustomerName(capitalized);
       closeCustomerModal();
     }
   };

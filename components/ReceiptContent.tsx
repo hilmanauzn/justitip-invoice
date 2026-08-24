@@ -3,12 +3,14 @@ import { useCartStore } from "@/store/useCartStore";
 import { useCartTotals } from "@/hooks/useCartTotals";
 import { formatPrice } from "@/utils/format";
 import { restaurantData } from "@/data";
+import { useCustomerStore } from "@/store/useCustomerStore";
 
 export default function ReceiptContent() {
   const { items } = useCartStore();
   const totals = useCartTotals();
+  const customerName =
+    useCustomerStore((state) => state.customerName) || "Pelanggan";
 
-  const customerName = "Pelanggan";
   // eslint-disable-next-line react-hooks/purity
   const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
   const ongkir = 0;

@@ -35,12 +35,6 @@ export default function FloatingSearchButton() {
     };
   }, [isSearchExpanded, isProgrammaticScroll, setSearchExpanded]);
 
-  const handleClose = () => {
-    setInputValue(""); // kosongkan input lokal
-    setSearchQuery(""); // reset query di store segera
-    if (onClose) onClose(); // tutup popover / panggil onClose
-  };
-
   return (
     <div
       className="md:hidden fixed right-4 z-40 flex flex-col items-end transition-all duration-200"
