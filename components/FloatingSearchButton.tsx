@@ -10,17 +10,20 @@ export default function FloatingSearchButton() {
     (state) => state.toggleSearchExpanded,
   );
   const setSearchExpanded = useUIStore((state) => state.setSearchExpanded);
+  const isProgrammaticScroll = useUIStore(
+    (state) => state.isProgrammaticScroll,
+  );
   const inset = useKeyboardInset();
 
-  // Tutup popover saat scroll atau touchmove
+  // Tutup popover saat scroll, kecuali jika scroll programmatic
   useEffect(() => {
     if (!isSearchExpanded) return;
 
     const handleScroll = () => {
+      if (isProgrammaticScroll) return;
       setSearchExpanded(false);
     };
 
-    // Multiple events untuk memastikan tertangkap di semua browser
     document.addEventListener("scroll", handleScroll, true);
     window.addEventListener("scroll", handleScroll, true);
     window.addEventListener("touchmove", handleScroll, { passive: true });
@@ -30,7 +33,13 @@ export default function FloatingSearchButton() {
       window.removeEventListener("scroll", handleScroll, true);
       window.removeEventListener("touchmove", handleScroll);
     };
-  }, [isSearchExpanded, setSearchExpanded]);
+  }, [isSearchExpanded, isProgrammaticScroll, setSearchExpanded]);
+
+  const handleClose = () => {
+    setInputValue(""); // kosongkan input lokal
+    setSearchQuery(""); // reset query di store segera
+    if (onClose) onClose(); // tutup popover / panggil onClose
+  };
 
   return (
     <div

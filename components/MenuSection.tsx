@@ -1,5 +1,5 @@
 "use client";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { menuData, restaurantData } from "@/data";
 import MenuItemCard from "./MenuItemCard";
 import AccordionSection from "./AccordionSection";
@@ -8,6 +8,9 @@ import { useUIStore } from "@/store/useUIStore";
 export default function MenuSection() {
   const searchQuery = useUIStore((state) => state.searchQuery);
   const setIsScrolled = useUIStore((state) => state.setIsScrolled);
+  const setProgrammaticScroll = useUIStore(
+    (state) => state.setProgrammaticScroll,
+  );
   const [scrollTimeout, setScrollTimeout] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
@@ -15,6 +18,7 @@ export default function MenuSection() {
   const [openRestaurantIds, setOpenRestaurantIds] = useState<string[]>(
     restaurantIds.length > 0 ? [restaurantIds[0]] : [],
   );
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const toggleRestaurant = (id: string) => {
     setOpenRestaurantIds((prev) =>
@@ -53,6 +57,19 @@ export default function MenuSection() {
     setScrollTimeout(newTimeout);
   };
 
+  useEffect(() => {
+    if (searchQuery.trim() !== "") {
+      // Tandai scroll programmatic agar popover search tidak tertutup
+      setProgrammaticScroll(true);
+      scrollContainerRef.current?.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      const timer = setTimeout(() => setProgrammaticScroll(false), 500); // durasi animasi
+      return () => clearTimeout(timer);
+    }
+  }, [searchQuery, setProgrammaticScroll]);
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastScrollTop = useRef(0);
 
@@ -71,6 +88,7 @@ export default function MenuSection() {
     return (
       <div
         className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain"
+        ref={scrollContainerRef}
         onScroll={handleScroll}
       >
         {/* Sticky header hasil pencarian – offset mengikuti tinggi header utama */}
@@ -112,6 +130,7 @@ export default function MenuSection() {
   return (
     <div
       className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain menu-scroll"
+      ref={scrollContainerRef}
       onScroll={handleScroll}
     >
       <div className="px-4 sm:px-6 py-4 sm:py-6 space-y-4 pb-24 md:pb-6">

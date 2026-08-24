@@ -52,6 +52,12 @@ export default function SearchInput({
     }
   }, [inputValue]);
 
+  const handleClose = () => {
+    setInputValue(""); // kosongkan input lokal
+    setSearchQuery(""); // reset query di store segera
+    if (onClose) onClose(); // tutup popover / panggil onClose
+  };
+
   return (
     <div className="relative w-full">
       <input
@@ -81,7 +87,7 @@ export default function SearchInput({
       </span>
       {onClose && (
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
           aria-label="Tutup pencarian"
         >

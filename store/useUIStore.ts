@@ -18,6 +18,8 @@ interface UIState {
   closeSummary: () => void;
   openReceipt: (image: string) => void;
   closeReceipt: () => void;
+  isProgrammaticScroll: boolean;
+  setProgrammaticScroll: (v: boolean) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -39,4 +41,6 @@ export const useUIStore = create<UIState>((set) => ({
   closeSummary: () => set({ isSummaryOpen: false }),
   openReceipt: (image) => set({ isReceiptOpen: true, receiptImage: image }),
   closeReceipt: () => set({ isReceiptOpen: false, receiptImage: null }),
+  isProgrammaticScroll: false,
+  setProgrammaticScroll: (v) => set({ isProgrammaticScroll: v }),
 }));
