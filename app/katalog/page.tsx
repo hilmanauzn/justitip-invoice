@@ -79,8 +79,8 @@ export default function KatalogFlipbook() {
     }
   }, [flipbookWidth]); // ulangi jika lebar flipbook berubah
 
-  const handlePageChange = (e: unknown) => {
-    setCurrentPage(e.data as number);
+  const handlePageChange = (e: { data: number }) => {
+    setCurrentPage(e?.data);
   };
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
