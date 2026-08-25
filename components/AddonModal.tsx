@@ -41,7 +41,7 @@ export default function AddonModal() {
 
         <p className="text-sm text-gray-600 mb-2">{selectedItem.name}</p>
 
-        <div className="space-y-2 max-h-60 overflow-y-auto">
+        <div className="space-y-2 max-h-60 overflow-y-auto!">
           {selectedItem.addon?.map((addon) => (
             <button
               key={addon}

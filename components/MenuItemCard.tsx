@@ -58,7 +58,7 @@ export default function MenuItemCard({
   } else {
     const jastipText =
       restaurantMultiple > 1
-        ? `Jastip: ${formatPrice(restaurantJastipFee)}/kelipatan ${restaurantMultiple} item`
+        ? `Jastip: ${formatPrice(restaurantJastipFee)}/${restaurantMultiple} item`
         : `Jastip: ${formatPrice(restaurantJastipFee)}/item`;
     jastipBadge = (
       <span className="text-xs font-medium text-green-600 bg-green-100 rounded-full px-2 py-0.5">

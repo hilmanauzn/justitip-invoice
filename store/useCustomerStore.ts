@@ -21,6 +21,9 @@ export const useCustomerStore = create<CustomerState>()(
     {
       name: "customer-storage",
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        customerName: state.customerName, // hanya simpan nama
+      }),
     },
   ),
 );

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useCustomerStore } from "@/store/useCustomerStore";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
+import { useCartStore } from "@/store/useCartStore";
 
 export default function CustomerModal() {
   const {
@@ -31,12 +32,17 @@ export default function CustomerModal() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = inputValue.trim().replace(/\s+/g, " "); // rapikan spasi
+    const trimmed = inputValue.trim().replace(/\s+/g, " ");
     if (trimmed) {
-      // Capitalize setiap kata
       const capitalized = trimmed
         .toLowerCase()
         .replace(/\b\w/g, (c) => c.toUpperCase());
+
+      // Jika nama berubah, kosongkan keranjang
+      if (capitalized !== customerName) {
+        useCartStore.getState().clearCart();
+      }
+
       setCustomerName(capitalized);
       closeCustomerModal();
     }
