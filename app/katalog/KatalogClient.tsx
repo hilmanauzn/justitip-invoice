@@ -79,7 +79,7 @@ export default function KatalogFlipbook() {
     }
   }, [flipbookWidth]);
 
-  const handlePageChange = (e: { data: any }) => {
+  const handlePageChange = (e: { data: number }) => {
     const page = e.data;
     setCurrentPage(page);
     setInputPage(String(page));
