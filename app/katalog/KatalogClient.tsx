@@ -12,7 +12,7 @@ export default function KatalogFlipbook() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [inputPage, setInputPage] = useState("1");
+  const [inputPage, setInputPage] = useState("0");
   const [viewport, setViewport] = useState({ width: 0, height: 0 });
   const flipBookRef = useRef<unknown>(null);
 
